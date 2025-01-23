@@ -3,15 +3,14 @@
 
 AWSTemplateFormatVersion: '2010-09-09'
 Description: >
-  This CloudFormation stack creates all the necessary pre-requisites for Amazon SageMaker Hyperpod,
-  these include VPC and two Subnets, a security group, a FSx Lustre Filesystem, S3 Bucket and IAM Role.
-  A public subnet and a private subnet are created in an Availability Zone that you provide as a parameter.
-  As part of the template you'll deploy an Internet Gateway and NAT Gateway in
-  the public subnet. In addition you deploy endpoints for Amazon S3. The VPC contains 2 CIDR blocks with 10.0.0.0/16 and 10.1.0.0/16
-  The first CIDR is used for the public subnet, the second is used for the private.
-  The template creates an fsx lustre volume in the specified AZ with a default of
-  1.2 TB storage which can be overridden by parameter. A role is also created which
-  helps to execute HyperPod cluster operations.
+  This CloudFormation stack creates all the necessary pre-requisites for Amazon SageMaker HyperPod.
+  These include a VPC with two subnets, a security group, an FSx for Lustre file system, an S3 bucket, and an IAM role.
+  A public subnet and a private subnet are created in an Availability Zone that you provide as a parameter. 
+  As part of the template, you'll deploy an Internet Gateway and NAT Gateway in the public subnet. 
+  In addition, you'll deploy endpoints for Amazon S3. The VPC contains two CIDR blocks: 10.0.0.0/16 and 10.1.0.0/16. 
+  The first CIDR is used for the public subnet, while the second is used for the private subnet.
+  The template creates an FSx for Lustre volume in the specified AZ with a default storage capacity of 1.2 TB, which can be overridden by a parameter. 
+  An IAM role is also created to help HyperPod cluster operations.
 
 
 ####################
@@ -487,6 +486,11 @@ Outputs:
     Description: ID of the primary private subnet
     Export:
       Name: !Sub ${AWS::StackName}-PrimaryPrivateSubnet
+  BackupPrivateSubnet:
+    Value: !Ref BackupPrivateSubnet
+    Description: ID of the backup private subnet
+    Export:
+      Name: !Sub ${AWS::StackName}-BackupPrivateSubnet
   SecurityGroup:
     Value: !Ref SecurityGroup
     Description: SecurityGroup for Batch
